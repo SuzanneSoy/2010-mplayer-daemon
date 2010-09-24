@@ -1,0 +1,7 @@
+#!/bin/bash
+
+V="-8"
+MP_CONTROL="/dev/shm/mplayer-contol$V"
+MP_OUTPUT="/dev/shm/mplayer-output$V"
+MP_PID="/dev/shm/mplayer-pid$V"
+MP_ERROR="/tmp/mplayer-errors.log"

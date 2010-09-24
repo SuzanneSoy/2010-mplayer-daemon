@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source "$(dirname "$0")/config"
+
+echo "loadfile '$(readlink -f "$1")' 0" > "$MP_CONTROL"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+source "$(dirname "$0")/config"
+
+q="'"
+
+old_titre=""
+
+cat "$MP_OUTPUT" \
+| while read ligne; do
+	# TODO : utiliser grep n'est pas du tout efficace !
+	if grep -q "^[a-zA-Z_][a-zA-Z0-9_]*='"<<<"$ligne"; then
+		cle="${ligne%%=$q*}"
+		valeur="${ligne#*=$q}"
+		valeur="${valeur%$q}"
+		case "$cle" in
+			ANS_META_TITLE)
+				old_titre="$titre"
+				titre="$valeur"
+				if [ "$titre" != "$old_titre" ]; then
+					echo "TITRE = $titre"
+				fi
+			;;
+		esac
+	else
+		(echo "get_meta_title" > "$MP_CONTROL") &
+	fi
+done
