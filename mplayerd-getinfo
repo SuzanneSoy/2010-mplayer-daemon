@@ -1,15 +1,20 @@
 #!/bin/bash
 
+# notify-send -i ~/img/fonds\ d\'écran/3153_small.jpg "JCRZ - Deep blue (2005)" "blablabla"
+
 source "$(dirname "$0")/config"
 
 q="'"
 
 old_titre=""
+old_artiste=""
+old_album=""
 
 cat "$MP_OUTPUT" \
 | while read ligne; do
 	# TODO : utiliser grep n'est pas du tout efficace !
 	if grep -q "^[a-zA-Z_][a-zA-Z0-9_]*='"<<<"$ligne"; then
+		modif=0
 		cle="${ligne%%=$q*}"
 		valeur="${ligne#*=$q}"
 		valeur="${valeur%$q}"
@@ -18,11 +23,36 @@ cat "$MP_OUTPUT" \
 				old_titre="$titre"
 				titre="$valeur"
 				if [ "$titre" != "$old_titre" ]; then
+					modif=1
 					echo "TITRE = $titre"
 				fi
 			;;
+			ANS_META_ARTIST)
+				old_artiste="$artiste"
+				artiste="$valeur"
+				if [ "$artiste" != "$old_artiste" ]; then
+					modif=1
+					echo "ARTISTE = $artiste"
+				fi
+			;;
+			ANS_META_ALBUM)
+				old_album="$album"
+				album="$valeur"
+				if [ "$album" != "$old_album" ]; then
+					modif=1
+					echo "ALBUM = $album"
+				fi
+			;;
 		esac
+		if [ "$modif" != "0" ]; then
+			notify-send -i ~/img/fonds\ d\'écran/3153_small.jpg "$artiste - $titre" "Album: $album"
+		fi
 	else
-		(echo "get_meta_title" > "$MP_CONTROL") &
+		# TODO : peut-être envoyer seulement quand il affiche "now playing..."
+		(
+			echo "get_meta_title" > "$MP_CONTROL"
+			echo "get_meta_artist" > "$MP_CONTROL"
+			echo "get_meta_album" > "$MP_CONTROL"
+		) &
 	fi
 done
