@@ -3,3 +3,9 @@
 source "$(dirname "$0")/config"
 
 echo "loadfile '$(readlink -f "$1")' 0" > "$MP_CONTROL"
+
+# On lit /dev/null après le fichier, pour détecter la fin du fichier.
+# Sinon, mplayer ne donne aucune indication comme quoi il est arrivé
+# à la fin du fichier (en fait il affiche un "\n", mais c'est dur à
+# détecter et il se peut que d'autres évènements en génèrent un aussi).
+echo "loadfile '/dev/null' 1" > "$MP_CONTROL"

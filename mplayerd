@@ -5,7 +5,7 @@ source "$(dirname "$0")/config"
 if [ "$1" == "stop" ]; then
 	if [ -e /dev/shm/mplayer-pid ]; then
 		if ! kill "$(<"$MP_PID")"; then
-			echo "Failed to kill mplayer"
+			echo "Failed to kill mplayer."
 			exit 2
 		fi
 	else
@@ -17,5 +17,5 @@ else
 	[ -p "$MP_OUTPUT" ] || mkfifo "$MP_OUTPUT"
 	
 	mplayer -quiet -slave -input file="$MP_CONTROL" -idle > "$MP_OUTPUT" 2> "$MP_ERROR" &
-	echo "$!" > /dev/shm/mplayer-pid
+	echo "$!" > "$MP_PID"
 fi

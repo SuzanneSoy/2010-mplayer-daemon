@@ -13,6 +13,10 @@ old_album=""
 
 cat "$MP_OUTPUT" \
 | while read ligne; do
+	# Détection de la fin de fichier (voir commentaire dans mplayerd-play.
+	if [ "$ligne" == "Playing /dev/null." ]; then 
+		echo "EOF"
+	fi
 	# TODO : utiliser grep n'est pas du tout efficace !
 	if grep -q "^[a-zA-Z_][a-zA-Z0-9_]*='"<<<"$ligne"; then
 		modif=0
