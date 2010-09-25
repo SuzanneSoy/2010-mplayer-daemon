@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# notify-send -i ~/img/fonds\ d\'écran/3153_small.jpg "JCRZ - Deep blue (2005)" "blablabla"
+# notify-send -i ~/img/fonds\ d\'écran/3153_small.jpg "Antony Raijekov - Deep blue (2005)" "blablabla"
+# zenity --notification --window-icon=/usr/share/icons/gnome/scalable/mimetypes/audio-x-generic.svg --text "Antony Raijekov - Moment of Green (2005)"
 
 source "$(dirname "$0")/config"
 
